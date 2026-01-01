@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TASK_ID="af32bd1b-ef6e-47a3-a875-32cc932434a3"
-MODEL="mhnakif/fluxunchained-dev"
-DATASET_ZIP="https://gradients.s3.eu-north-1.amazonaws.com/88a183b11c36a018_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVVZOOA7SA4UOFLPI%2F20251221%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251221T220851Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=37becbbd98b4f2fd5cce61e7fa0a200a8747b6b407e2a93414f29f21ca7da2b7"
+TASK_ID="57cdbde1-6c49-449f-8fe6-47216b992d63"
+MODEL="rayonlabs/FLUX.1-dev"
+DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/976ff0a2f9e3cd04_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20251226%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20251226T221246Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=283837258d0849b1da7d5b61ae6e28a13c14bfd17241a4f32ba2ef2f5d740352"
 MODEL_TYPE="flux"
 EXPECTED_REPO_NAME="test_flux-1"
 

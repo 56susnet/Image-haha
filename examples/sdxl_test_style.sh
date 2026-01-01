@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TASK_ID="a99f887d-dac1-48aa-883c-78d298b800b4"
-MODEL="dataautogpt3/CALAMITY"
-DATASET_ZIP="https://gradients.s3.eu-north-1.amazonaws.com/59ddb9abbf4a4348_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVVZOOA7SA4UOFLPI%2F20251221%2Feu-north-1%2Fs3%2Faws4_request&X-Amz-Date=20251221T014637Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=c5f120d9ad4c5e04843cc6578f0dc4f8ca6b6abc98fc1c9cb9ce5d2bceb90874"
+TASK_ID="6ce19ab2-5a33-42de-9df7-33264a927a1b"
+MODEL="GraydientPlatformAPI/realism-engine2-xl"
+DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/f4a883858c970bf5_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20251226%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20251226T131030Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=75cd9d0adc11c48254e7de5e4c08c43df33c055d9eef0441c6c1cc0b4ea62dcd"
 MODEL_TYPE="sdxl"
 EXPECTED_REPO_NAME="test_style-1"
 
