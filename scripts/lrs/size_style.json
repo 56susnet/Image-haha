@@ -5,7 +5,7 @@
             "min": 1,
             "max": 20,
             "config": {
-                "max_train_epochs": 15,
+                "max_train_epochs": 25,
                 "train_batch_size": 4,
                 "lr_warmup_steps": 150,
                 "network_dim": 32,
@@ -16,7 +16,7 @@
             "min": 21,
             "max": 50,
             "config": {
-                "max_train_epochs": 10,
+                "max_train_epochs": 15,
                 "train_batch_size": 6,
                 "lr_warmup_steps": 300,
                 "network_dim": 32,
@@ -27,7 +27,7 @@
             "min": 51,
             "max": 100,
             "config": {
-                "max_train_epochs": 8,
+                "max_train_epochs": 10,
                 "train_batch_size": 6,
                 "lr_warmup_steps": 300,
                 "network_dim": 64,
@@ -38,7 +38,7 @@
             "min": 101,
             "max": 1000,
             "config": {
-                "max_train_epochs": 5,
+                "max_train_epochs": 7,
                 "train_batch_size": 6,
                 "lr_warmup_steps": 300,
                 "network_dim": 64,

@@ -24,7 +24,14 @@
             "seed": 2951032221
         },
         "34a7aae44aeda3ba98eec73d818a4392a6226b9e00c223af02c105bda649268c": {},
-        "6042ce99f9cde5c1a8acfc32dd1b3ba7ac4523aba281c1d9295e1a6d7b98a8e7": {},
+        "6042ce99f9cde5c1a8acfc32dd1b3ba7ac4523aba281c1d9295e1a6d7b98a8e7": {
+            "max_train_epochs": 20,
+            "unet_lr": 0.00002,
+            "text_encoder_lr": 0.000002,
+            "lr_warmup_steps": 25,
+            "noise_offset": 0.0357,
+            "min_snr_gamma": 8
+        },
         "a1fd5a9d0707d1b96b7738c4c48894f95e8ddbaa840d5aa85a3a03671479894c": {
             "max_grad_norm": 1.2,
             "prior_loss_weight": 0.5,
@@ -34,14 +41,12 @@
             "noise_offset": 0.0357
         },
         "7637327a8414801bf0bb4d6d1b574dd95c05525165ee271cc085b64f89c8cba8": {
-            "prior_loss_weight": 0.7,
-            "optimizer_args": [
-                "decouple=True",
-                "d_coef=1",
-                "weight_decay=0.001",
-                "use_bias_correction=True",
-                "safeguard_warmup=True"
-            ]
+            "max_train_epochs": 20,
+            "unet_lr": 0.00002,
+            "text_encoder_lr": 0.000002,
+            "lr_warmup_steps": 25,
+            "noise_offset": 0.0357,
+            "min_snr_gamma": 8
         },
         "158598455e814319c65ccbf8bbae049200601b2ac4fb1429fed6158f2f5ac8bd": {
             "max_train_epochs": 22,

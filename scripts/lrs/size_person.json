@@ -27,18 +27,18 @@
             "min": 31,
             "max": 50,
             "config": {
-                "train_batch_size": 6,
+                "train_batch_size": 8,
                 "lr_scheduler": "constant_with_warmup",
                 "lr_warmup_steps": 300,
-                "network_dim": 32,
-                "network_alpha": 16
+                "network_dim": 64,
+                "network_alpha": 32
             }
         },
         {
             "min": 51,
             "max": 80,
             "config": {
-                "train_batch_size": 6,
+                "train_batch_size": 8,
                 "lr_scheduler": "constant_with_warmup",
                 "lr_warmup_steps": 300,
                 "network_dim": 64,
@@ -49,11 +49,11 @@
             "min": 81,
             "max": 1000,
             "config": {
-                "train_batch_size": 6,
+                "train_batch_size": 10,
                 "lr_scheduler": "constant_with_warmup",
-                "lr_warmup_steps": 300,
-                "network_dim": 64,
-                "network_alpha": 32
+                "lr_warmup_steps": 500,
+                "network_dim": 128,
+                "network_alpha": 64
             }
         }
     ]

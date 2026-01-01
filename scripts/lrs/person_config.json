@@ -1,7 +1,9 @@
 {
     "default": {},
     "data": {
-        "b89415872c1864f2a6ccccb34d6744021aa58eec13ab9109d4fa53931156ead4": {},
+        "b89415872c1864f2a6ccccb34d6744021aa58eec13ab9109d4fa53931156ead4": {
+            "max_train_epochs": 25
+        },
         "f61cef4efcc21d26c0257cd9884a1b67c019d786092dfa4bc0b1ef4ed8869d80": {
             "prior_loss_weight": 0.7,
             "min_snr_gamma": 6,
@@ -56,7 +58,9 @@
         "f04d4cd944ff8ff03dda0ad75ae479cde3402e6eb2ac9ebd1b170b59f59b21ac": {
             "max_train_epochs": 30
         },
-        "d90d3201d5b2ca617d1b34ddc57d124b19d33b98cf1e653299b9b6c849acb69b": {},
+        "d90d3201d5b2ca617d1b34ddc57d124b19d33b98cf1e653299b9b6c849acb69b": {
+            "max_train_epochs": 25
+        },
         "e7d0cc3356bd946337fb5e22fcff6132c7eb363abded9d32a99e42145a90309f": {},
         "2b2d23c68c5429f8108bb6f80e20cc08bbed1d3210bbba21bd674a767e2695b1": {},
         "70ff32b896771e2c67412f6a8299e0bf831705bb714af7e810c1466de783cdd0": {
@@ -82,7 +86,9 @@
                 "safeguard_warmup=True"
             ]
         },
-        "9177dab379e14f76c500ad2246352fd9387f11e2f57e2973bf9ada4d7cd4c962": {},
+        "9177dab379e14f76c500ad2246352fd9387f11e2f57e2973bf9ada4d7cd4c962": {
+            "max_train_epochs": 25
+        },
         "c6efeaf411754e65b3e2395640d5f90ac6150a1d82e4b3caf8df566aa406609c": {},
         "87a20676586c53891563895be0408c6109b83f1d891700dd6ff6c02a25cd6c47": {},
         "eb324bfcad14e8f1d46346f46ae7af7d3e58c3babbc1f699ee7c61baab291369": {
