@@ -1,59 +1,67 @@
 {
-    "default": {},
+    "default": {
+        "max_train_epochs": 30,
+        "train_batch_size": 6,
+        "prior_loss_weight": 0.7,
+        "min_snr_gamma": 7,
+        "optimizer_args": [
+            "decouple=True",
+            "d_coef=1",
+            "weight_decay=0.005",
+            "use_bias_correction=True",
+            "safeguard_warmup=True"
+        ]
+    },
     "size_ranges": [
         {
             "min": 1,
-            "max": 15,
+            "max": 10,
             "config": {
-                "train_batch_size": 6,
-                "lr_scheduler": "constant_with_warmup",
-                "lr_warmup_steps": 150,
-                "network_dim": 32,
-                "network_alpha": 16
+                "max_train_epochs": 45,
+                "train_batch_size": 3,
+                "prior_loss_weight": 1.0,
+                "min_snr_gamma": 7,
+                "optimizer_args": [
+                    "decouple=True",
+                    "d_coef=1",
+                    "weight_decay=0.001",
+                    "use_bias_correction=True",
+                    "safeguard_warmup=True"
+                ]
             }
         },
         {
-            "min": 16,
+            "min": 11,
             "max": 30,
             "config": {
+                "max_train_epochs": 30,
                 "train_batch_size": 6,
-                "lr_scheduler": "constant_with_warmup",
-                "lr_warmup_steps": 150,
-                "network_dim": 32,
-                "network_alpha": 16
+                "prior_loss_weight": 0.7,
+                "min_snr_gamma": 7,
+                "optimizer_args": [
+                    "decouple=True",
+                    "d_coef=1",
+                    "weight_decay=0.005",
+                    "use_bias_correction=True",
+                    "safeguard_warmup=True"
+                ]
             }
         },
         {
             "min": 31,
-            "max": 50,
-            "config": {
-                "train_batch_size": 8,
-                "lr_scheduler": "constant_with_warmup",
-                "lr_warmup_steps": 300,
-                "network_dim": 64,
-                "network_alpha": 32
-            }
-        },
-        {
-            "min": 51,
-            "max": 80,
-            "config": {
-                "train_batch_size": 8,
-                "lr_scheduler": "constant_with_warmup",
-                "lr_warmup_steps": 300,
-                "network_dim": 64,
-                "network_alpha": 32
-            }
-        },
-        {
-            "min": 81,
             "max": 1000,
             "config": {
-                "train_batch_size": 10,
-                "lr_scheduler": "constant_with_warmup",
-                "lr_warmup_steps": 500,
-                "network_dim": 128,
-                "network_alpha": 64
+                "max_train_epochs": 15,
+                "train_batch_size": 8,
+                "prior_loss_weight": 0.5,
+                "min_snr_gamma": 5,
+                "optimizer_args": [
+                    "decouple=True",
+                    "d_coef=1",
+                    "weight_decay=0.01",
+                    "use_bias_correction=True",
+                    "safeguard_warmup=True"
+                ]
             }
         }
     ]
