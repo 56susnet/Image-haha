@@ -23,6 +23,34 @@ from core.config.config_handler import save_config, save_config_toml
 from core.dataset.prepare_diffusion_dataset import prepare_dataset
 from core.models.utility_models import ImageModelType
 
+# --- Model Categorization (Kasta) ---
+REALISTIC_MODELS = [
+    "stabilityai/stable-diffusion-xl-base-1.0",
+    "misri/leosamsHelloworldXL_helloworldXL70",
+    "GraydientPlatformAPI/realism-engine2-xl",
+    "SG161222/RealVisXL_V4.0",
+    "misri/zavychromaxl_v90",
+    "femboysLover/RealisticStockPhoto-fp16",
+    "ehristoforu/Visionix-alpha",
+    "ifmain/UltraReal_Fine-Tune",
+    "stablediffusionapi/protovision-xl-v6.6",
+    "dataautogpt3/TempestV0.1",
+    "GraydientPlatformAPI/albedobase2-xl"
+]
+
+ANIME_MODELS = [
+    "zenless-lab/sdxl-aam-xl-anime-mix",
+    "John6666/nova-anime-xl-pony-v5-sdxl",
+    "zenless-lab/sdxl-anima-pencil-xl-v5",
+    "cagliostrolab/animagine-xl-4.0",
+    "zenless-lab/sdxl-anything-xl",
+    "OnomaAIResearch/Illustrious-xl-early-release-v0",
+    "John6666/hassaku-xl-illustrious-v10style-sdxl",
+    "KBlueLeaf/Kohaku-XL-Zeta",
+    "zenless-lab/sdxl-blue-pencil-xl-v7"
+]
+# All other models fallback to GENERAL or default template settings.
+
 
 def get_model_path(path: str) -> str:
     if os.path.isdir(path):
@@ -200,6 +228,22 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         else:
             print("Warning: Could not load LRS configuration, using default values", flush=True)
 
+        # --- PHASE 2: Categorical Overrides (Kasta Logic) ---
+        if model_type == "sdxl":
+            if model_name in REALISTIC_MODELS:
+                print(f"Categorizing as REALISTIC for {model_name}", flush=True)
+                config["prior_loss_weight"] = 1.0
+                config["min_snr_gamma"] = 7
+                config["noise_offset"] = 0.0357
+            elif model_name in ANIME_MODELS:
+                print(f"Categorizing as ANIME for {model_name}", flush=True)
+                config["prior_loss_weight"] = 0.7
+                config["min_snr_gamma"] = 5
+                # Anime often needs less noise correction
+            else:
+                print(f"Categorizing as GENERAL for {model_name}", flush=True)
+                # Keep TOML winner defaults
+
         network_config_person = {
             "stabilityai/stable-diffusion-xl-base-1.0": 235,
             "Lykon/dreamshaper-xl-1-0": 235,
@@ -323,8 +367,9 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         if dataset_size > 0:
             size_config = load_size_based_config(model_type, is_style, dataset_size)
             if size_config:
-                print(f"Applying size-based config for {dataset_size} images", flush=True)
+                print(f"Applying size-based tactical zone for {dataset_size} images", flush=True)
                 for key, value in size_config.items():
+                    # Size-based config (Sniper/Turbo) has high priority
                     config[key] = value
         
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.toml")
