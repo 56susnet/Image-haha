@@ -244,6 +244,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                 config["noise_offset"] = 0.0
                 config["scale_weight_norms"] = 5.0
                 config["caption_dropout_rate"] = 0.0
+                config["clip_skip"] = 2  # Anime models perform drastically better with Clip Skip 2
             else:
                 print(f"Categorizing as GENERAL for {model_name}", flush=True)
                 # Keep TOML defaults
@@ -252,6 +253,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                 config["noise_offset"] = 0.0
                 config["scale_weight_norms"] = 5.0
                 config["caption_dropout_rate"] = 0.0
+                config["clip_skip"] = 1
 
         network_config_person = {
             "stabilityai/stable-diffusion-xl-base-1.0": 235,
