@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TASK_ID="8cb556cc-71a6-4d40-9807-c6f9255b70ab"
-MODEL="Lykon/dreamshaper-xl-1-0"
-DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/823d7b72899764bb_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20251226%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20251226T180428Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=76cda88320d555ceab71fe8c582d1bc5a1829277383c4f653fe3fcd2d568a66b"
+TASK_ID="74f78351-29a5-481e-aacb-8f42aab3f437"
+MODEL="OnomaAIResearch/Illustrious-xl-early-release-v0"
+DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/ff10db6ee6d676a4_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20260101%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20260101T161648Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=7344099f7d94897bd6182c67070b4fab7c943517019a44523d6c8f0e78350986"
 MODEL_TYPE="sdxl"
 EXPECTED_REPO_NAME="test_person-1"
 
