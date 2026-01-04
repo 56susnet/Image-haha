@@ -231,18 +231,27 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         # --- PHASE 2: Categorical Overrides (Kasta Logic) ---
         if model_type == "sdxl":
             if model_name in REALISTIC_MODELS:
-                print(f"Categorizing as REALISTIC for {model_name}", flush=True)
+                print(f"Categorizing as REALISTIC for {model_name} (Aggressive Strategy)", flush=True)
                 config["prior_loss_weight"] = 1.0
                 config["min_snr_gamma"] = 7
                 config["noise_offset"] = 0.0357
+                config["scale_weight_norms"] = 1.0
+                config["caption_dropout_rate"] = 0.05
             elif model_name in ANIME_MODELS:
-                print(f"Categorizing as ANIME for {model_name}", flush=True)
+                print(f"Categorizing as ANIME for {model_name} (Clean Strategy)", flush=True)
                 config["prior_loss_weight"] = 0.7
-                config["min_snr_gamma"] = 5
-                # Anime often needs less noise correction
+                config["min_snr_gamma"] = 7
+                config["noise_offset"] = 0.0
+                config["scale_weight_norms"] = 5.0
+                config["caption_dropout_rate"] = 0.0
             else:
                 print(f"Categorizing as GENERAL for {model_name}", flush=True)
-                # Keep TOML winner defaults
+                # Keep TOML defaults
+                config["prior_loss_weight"] = 0.7
+                config["min_snr_gamma"] = 7
+                config["noise_offset"] = 0.0
+                config["scale_weight_norms"] = 5.0
+                config["caption_dropout_rate"] = 0.0
 
         network_config_person = {
             "stabilityai/stable-diffusion-xl-base-1.0": 235,

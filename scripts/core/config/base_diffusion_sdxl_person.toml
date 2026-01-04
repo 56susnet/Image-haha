@@ -52,7 +52,7 @@ text_encoder_lr = 1
 
 lr_scheduler = "constant"
 
-noise_offset = 0.0357
+# noise_offset = 0.0357
 # noise_offset_type = "Multires"
 # multires_noise_iterations = 6
 # multires_noise_discount = 0.3
@@ -62,9 +62,9 @@ network_dim = -1
 network_module = "networks.lora"
 network_args = []
 network_dropout = 0
-caption_dropout_rate = 0.05
+caption_dropout_rate = 0.0
 clip_skip = 1
 max_timestep = 1000
 min_snr_gamma = 7
-scale_weight_norms = 1.0
+scale_weight_norms = 5.0
 seed = 2951032222
