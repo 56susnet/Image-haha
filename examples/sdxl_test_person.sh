@@ -1,10 +1,10 @@
 #!/bin/bash
 
-TASK_ID="58684b15-d0b0-443a-a9bd-7a179022dba3"
-MODEL="OnomaAIResearch/Illustrious-xl-early-release-v0"
-DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/dd8329c969587fb8_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20260102%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20260102T104813Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=7bb3f37b1ae24bf7b88b2f6893bf8ff0bb6c7c9b25922e2cc001dbaa2349d2c0"
+TASK_ID="198cdb25-4e39-4650-bba3-fa2dc3259bfd"
+MODEL="GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16"
+DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/e0267ff723faf52e_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20260101%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20260101T224432Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=27dcb3bfc9b3958a0cc901828abea472e526d24ae37f3d0d802a9a441a51b6c9"
 MODEL_TYPE="sdxl"
-EXPECTED_REPO_NAME="test_person-1"
+EXPECTED_REPO_NAME="test_person-ghart1"
 
 HUGGINGFACE_TOKEN=""
 HUGGINGFACE_USERNAME=""
