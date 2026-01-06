@@ -231,7 +231,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         # --- PHASE 2: Categorical Overrides (Kasta Logic) ---
         if model_type == "sdxl":
             if model_name in REALISTIC_MODELS:
-                print(f"Categorizing as REALISTIC for {model_name} (Silent Assassin Strategy)", flush=True)
+                print(f"Categorizing as REALISTIC for {model_name} (Executioner Strategy)", flush=True)
                 config["prior_loss_weight"] = 1.0
                 config["min_snr_gamma"] = 7
                 config["noise_offset"] = 0.0357
@@ -239,19 +239,19 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                 config["caption_dropout_rate"] = 0.05
                 config["lr_scheduler"] = "cosine"
             elif model_name in ANIME_MODELS:
-                print(f"Categorizing as ANIME for {model_name} (Silent Assassin Strategy)", flush=True)
+                print(f"Categorizing as ANIME for {model_name} (Executioner Strategy)", flush=True)
                 config["prior_loss_weight"] = 1.0
-                config["min_snr_gamma"] = 5.0
+                config["min_snr_gamma"] = 4.0 # Final Precision Upgrade
                 config["noise_offset"] = 0.0
                 config["scale_weight_norms"] = 1.0 
                 config["caption_dropout_rate"] = 0.0
                 config["clip_skip"] = 2
                 config["lr_scheduler"] = "cosine"
             else:
-                print(f"Categorizing as GENERAL for {model_name} (Silent Assassin Strategy)", flush=True)
-                # Apply stable defaults
+                print(f"Categorizing as GENERAL for {model_name} (Executioner Strategy)", flush=True)
+                # Apply optimized defaults
                 config["prior_loss_weight"] = 1.0
-                config["min_snr_gamma"] = 7
+                config["min_snr_gamma"] = 5.0
                 config["noise_offset"] = 0.0
                 config["scale_weight_norms"] = 1.0
                 config["caption_dropout_rate"] = 0.0
