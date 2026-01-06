@@ -51,7 +51,7 @@
             "min": 31,
             "max": 1000,
             "config": {
-                "max_train_epochs": 50,
+                "max_train_epochs": 25,
                 "train_batch_size": 8,
                 "prior_loss_weight": 1.0,
                 "min_snr_gamma": 1.0,
