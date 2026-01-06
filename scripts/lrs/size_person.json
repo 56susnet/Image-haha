@@ -1,13 +1,13 @@
 {
     "default": {
-        "max_train_epochs": 40,
+        "max_train_epochs": 35,
         "train_batch_size": 6,
-        "prior_loss_weight": 0.7,
+        "prior_loss_weight": 0.8,
         "min_snr_gamma": 7,
         "optimizer_args": [
             "decouple=True",
             "d_coef=1.0",
-            "weight_decay=0.005",
+            "weight_decay=0.003",
             "use_bias_correction=True",
             "safeguard_warmup=True"
         ]
@@ -24,7 +24,7 @@
                 "optimizer_args": [
                     "decouple=True",
                     "d_coef=1.0",
-                    "weight_decay=0.005",
+                    "weight_decay=0.003",
                     "use_bias_correction=True",
                     "safeguard_warmup=True"
                 ]
@@ -34,14 +34,14 @@
             "min": 11,
             "max": 30,
             "config": {
-                "max_train_epochs": 40,
+                "max_train_epochs": 35,
                 "train_batch_size": 6,
-                "prior_loss_weight": 0.7,
+                "prior_loss_weight": 0.8,
                 "min_snr_gamma": 7,
                 "optimizer_args": [
                     "decouple=True",
                     "d_coef=1.0",
-                    "weight_decay=0.005",
+                    "weight_decay=0.003",
                     "use_bias_correction=True",
                     "safeguard_warmup=True"
                 ]

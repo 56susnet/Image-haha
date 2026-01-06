@@ -231,27 +231,27 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         # --- PHASE 2: Categorical Overrides (Kasta Logic) ---
         if model_type == "sdxl":
             if model_name in REALISTIC_MODELS:
-                print(f"Categorizing as REALISTIC for {model_name} (The Closer Strategy)", flush=True)
+                print(f"Categorizing as REALISTIC for {model_name} (Grand Master Strategy)", flush=True)
                 config["prior_loss_weight"] = 1.0
                 config["min_snr_gamma"] = 7
                 config["noise_offset"] = 0.0357
-                config["scale_weight_norms"] = 4.0
+                config["scale_weight_norms"] = 3.0
                 config["caption_dropout_rate"] = 0.05
             elif model_name in ANIME_MODELS:
-                print(f"Categorizing as ANIME for {model_name} (The Closer Strategy)", flush=True)
-                config["prior_loss_weight"] = 0.7
+                print(f"Categorizing as ANIME for {model_name} (Grand Master Strategy)", flush=True)
+                config["prior_loss_weight"] = 0.8
                 config["min_snr_gamma"] = 7
                 config["noise_offset"] = 0.0
-                config["scale_weight_norms"] = 4.0 
+                config["scale_weight_norms"] = 3.0 
                 config["caption_dropout_rate"] = 0.0
                 config["clip_skip"] = 2
             else:
-                print(f"Categorizing as GENERAL for {model_name} (The Closer Strategy)", flush=True)
+                print(f"Categorizing as GENERAL for {model_name} (Grand Master Strategy)", flush=True)
                 # Apply optimized defaults
-                config["prior_loss_weight"] = 0.7
+                config["prior_loss_weight"] = 0.8
                 config["min_snr_gamma"] = 7
                 config["noise_offset"] = 0.0
-                config["scale_weight_norms"] = 4.0
+                config["scale_weight_norms"] = 3.0
                 config["caption_dropout_rate"] = 0.0
                 config["clip_skip"] = 1
 
@@ -325,7 +325,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
 
         config_mapping = {
             228: {
-                "network_dim": 32,
+                "network_dim": 64,
                 "network_alpha": 32,
                 "network_args": []
             },
