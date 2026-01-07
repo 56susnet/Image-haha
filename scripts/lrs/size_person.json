@@ -6,7 +6,7 @@
         "min_snr_gamma": 1.0,
         "optimizer_args": [
             "decouple=True",
-            "d_coef=1.0",
+            "d_coef=1.2",
             "weight_decay=0.0",
             "use_bias_correction=True",
             "safeguard_warmup=True"
@@ -23,7 +23,7 @@
                 "min_snr_gamma": 1.0,
                 "optimizer_args": [
                     "decouple=True",
-                    "d_coef=1.0",
+                    "d_coef=1.2",
                     "weight_decay=0.0",
                     "use_bias_correction=True",
                     "safeguard_warmup=True"
@@ -40,7 +40,7 @@
                 "min_snr_gamma": 1.0,
                 "optimizer_args": [
                     "decouple=True",
-                    "d_coef=1.0",
+                    "d_coef=1.2",
                     "weight_decay=0.0",
                     "use_bias_correction=True",
                     "safeguard_warmup=True"
@@ -57,7 +57,7 @@
                 "min_snr_gamma": 1.0,
                 "optimizer_args": [
                     "decouple=True",
-                    "d_coef=1.0",
+                    "d_coef=1.2",
                     "weight_decay=0.0",
                     "use_bias_correction=True",
                     "safeguard_warmup=True"

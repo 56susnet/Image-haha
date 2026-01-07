@@ -47,7 +47,8 @@ ANIME_MODELS = [
     "OnomaAIResearch/Illustrious-xl-early-release-v0",
     "John6666/hassaku-xl-illustrious-v10style-sdxl",
     "KBlueLeaf/Kohaku-XL-Zeta",
-    "zenless-lab/sdxl-blue-pencil-xl-v7"
+    "zenless-lab/sdxl-blue-pencil-xl-v7",
+    "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16"
 ]
 # All other models fallback to GENERAL or default template settings.
 
@@ -262,7 +263,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             "Lykon/dreamshaper-xl-1-0": 235,
             "Lykon/art-diffusion-xl-0.9": 235,
             "SG161222/RealVisXL_V4.0": 467,
-            "stablediffusionapi/protovision-xl-v6.6": 235,
+            "stablediffusionapi/protovision-xl-v6.6": 467,
             "stablediffusionapi/omnium-sdxl": 235,
             "GraydientPlatformAPI/realism-engine2-xl": 235,
             "GraydientPlatformAPI/albedobase2-xl": 467,
@@ -287,7 +288,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             "zenless-lab/sdxl-anything-xl": 228,
             "zenless-lab/sdxl-blue-pencil-xl-v7": 467,
             "Corcelio/mobius": 228,
-            "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16": 235,
+            "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16": 467,
             "OnomaAIResearch/Illustrious-xl-early-release-v0": 228
         }
 
