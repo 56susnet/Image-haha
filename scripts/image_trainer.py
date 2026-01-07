@@ -221,7 +221,9 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                     "seed",
                     "noise_offset",
                     "lr_scheduler",
+                    "lr_scheduler",
                     "save_every_n_epochs",
+                    "scale_weight_norms",
                 ]:
                     if optional_key in lrs_settings:
                         config[optional_key] = lrs_settings[optional_key]
