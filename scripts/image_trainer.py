@@ -288,7 +288,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             "zenless-lab/sdxl-anything-xl": 228,
             "zenless-lab/sdxl-blue-pencil-xl-v7": 467,
             "Corcelio/mobius": 228,
-            "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16": 467,
+            "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16": 235,
             "OnomaAIResearch/Illustrious-xl-early-release-v0": 228
         }
 
