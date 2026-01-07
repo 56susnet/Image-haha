@@ -35,7 +35,8 @@ REALISTIC_MODELS = [
     "ifmain/UltraReal_Fine-Tune",
     "stablediffusionapi/protovision-xl-v6.6",
     "dataautogpt3/TempestV0.1",
-    "GraydientPlatformAPI/albedobase2-xl"
+    "GraydientPlatformAPI/albedobase2-xl",
+    "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16"
 ]
 
 ANIME_MODELS = [
@@ -47,8 +48,7 @@ ANIME_MODELS = [
     "OnomaAIResearch/Illustrious-xl-early-release-v0",
     "John6666/hassaku-xl-illustrious-v10style-sdxl",
     "KBlueLeaf/Kohaku-XL-Zeta",
-    "zenless-lab/sdxl-blue-pencil-xl-v7",
-    "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16"
+    "zenless-lab/sdxl-blue-pencil-xl-v7"
 ]
 # All other models fallback to GENERAL or default template settings.
 
