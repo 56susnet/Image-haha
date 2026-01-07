@@ -19,13 +19,13 @@
             "config": {
                 "max_train_epochs": 50,
                 "train_batch_size": 3,
-                "prior_loss_weight": 1.0,
+                "prior_loss_weight": 0.0,
                 "min_snr_gamma": 1.0,
-                "network_dim": 32,
-                "network_alpha": 32,
+                "network_dim": 64,
+                "network_alpha": 64,
                 "optimizer_args": [
                     "decouple=True",
-                    "d_coef=1.0",
+                    "d_coef=1.2",
                     "weight_decay=0.0",
                     "use_bias_correction=True",
                     "safeguard_warmup=True"
