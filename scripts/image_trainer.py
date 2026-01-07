@@ -210,6 +210,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                     "max_train_epochs",
                     "train_batch_size",
                     "max_train_steps",
+                    "network_dim",
                     "network_alpha",
                     "optimizer_args",
                     "unet_lr",
