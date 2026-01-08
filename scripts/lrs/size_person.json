@@ -17,18 +17,19 @@
             "min": 1,
             "max": 10,
             "config": {
-                "max_train_epochs": 48,
+                "max_train_epochs": 50,
                 "train_batch_size": 3,
                 "prior_loss_weight": 1.0,
-                "min_snr_gamma": 5.0,
+                "min_snr_gamma": 1.0,
                 "noise_offset": 0.0,
-                "scale_weight_norms": 10.0,
+                "scale_weight_norms": 100.0,
+                "loss_type": "l1",
                 "network_dim": 64,
                 "network_alpha": 64,
                 "optimizer_args": [
                     "decouple=True",
                     "d_coef=1.0",
-                    "weight_decay=0.015",
+                    "weight_decay=0.0",
                     "use_bias_correction=True",
                     "safeguard_warmup=True"
                 ]
