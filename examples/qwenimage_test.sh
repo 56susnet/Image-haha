@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TASK_ID="9db365e8-cf5f-46ac-a997-084a5785351f"
-MODEL="gradients-io-tournaments/Qwen-Image-Jib-Mix"
-DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/2dd734cf8b1b8f4b_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20251227%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20251227T024603Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=9cb2690c8d9bd4caeff1ad50ff372e2a61efb267d7c98e0b70628590ebd4b9bc"
+TASK_ID="7b04f8d6-92d5-47fe-91d7-61611d98b6e1"
+MODEL="gradients-io-tournaments/Qwen-Image"
+DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/38b4159b242031ce_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20260102%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20260102T094824Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=a97d6f215597f5e79b6daa39795bafe700d84317cc8ca13d45c641a56b1b7468"
 MODEL_TYPE="qwen-image"
 EXPECTED_REPO_NAME="test_qwenimage-1"
 

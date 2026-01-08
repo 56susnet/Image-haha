@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TASK_ID="f9f60b7d-7df2-4bfc-a394-e565449a2138"
+TASK_ID="3343be80-8455-421b-9858-743effed2599"
 MODEL="gradients-io-tournaments/Z-Image-Turbo"
-DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/6da713f69539e32b_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20251226%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20251226T182738Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=175387a86ac618003e39ee8d44558fef5bfa5b159839ad7d20bb3f0e6a5f0ac6"
+DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/93f45f689a88f9fb_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20260102%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20260102T100715Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=b6b8f6a325fff9d70e718168fc7ce06995c387bfb29fb724733e853f5eefc386"
 MODEL_TYPE="z-image"
 EXPECTED_REPO_NAME="test_zimage-1"
 

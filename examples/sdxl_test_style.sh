@@ -1,8 +1,8 @@
 #!/bin/bash
 
-TASK_ID="6ce19ab2-5a33-42de-9df7-33264a927a1b"
-MODEL="GraydientPlatformAPI/realism-engine2-xl"
-DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/f4a883858c970bf5_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20251226%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20251226T131030Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=75cd9d0adc11c48254e7de5e4c08c43df33c055d9eef0441c6c1cc0b4ea62dcd"
+TASK_ID="c9cfd68e-a61a-476c-aa6c-61f6375edcfe"
+MODEL="cagliostrolab/animagine-xl-4.0"
+DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/bd530a92397d9e4d_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20260101%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20260101T233031Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=f99d40c3bb49d8d06731f052c85b02e6a9aac56e94a918095c935af5850d9a86"
 MODEL_TYPE="sdxl"
 EXPECTED_REPO_NAME="test_style-1"
 
