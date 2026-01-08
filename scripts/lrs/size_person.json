@@ -16,60 +16,59 @@
         {
             "min": 1,
             "max": 10,
-            "config": {
-                "max_train_epochs": 40,
-                "train_batch_size": 3,
-                "prior_loss_weight": 1.0,
-                "min_snr_gamma": 5.0,
-                "scale_weight_norms": 1.0,
-                "network_dim": 64,
-                "network_alpha": 64,
-                "optimizer_args": [
-                    "decouple=True",
-                    "d_coef=1.0",
-                    "weight_decay=0.01",
-                    "use_bias_correction=True",
-                    "safeguard_warmup=True"
-                ]
-            }
-        },
-        {
-            "min": 11,
-            "max": 30,
-            "config": {
-                "max_train_epochs": 50,
-                "train_batch_size": 6,
-                "prior_loss_weight": 1.0,
-                "min_snr_gamma": 1.0,
-                "network_dim": 64,
-                "network_alpha": 64,
-                "optimizer_args": [
-                    "decouple=True",
-                    "d_coef=1.2",
-                    "weight_decay=0.0",
-                    "use_bias_correction=True",
-                    "safeguard_warmup=True"
-                ]
-            }
-        },
-        {
-            "min": 31,
-            "max": 1000,
-            "config": {
-                "max_train_epochs": 50,
-                "train_batch_size": 8,
-                "prior_loss_weight": 1.0,
-                "min_snr_gamma": 1.0,
-                "network_dim": 64,
-                "network_alpha": 64,
-                "optimizer_args": [
-                    "decouple=True",
-                    "d_coef=1.2",
-                    "weight_decay=0.0",
-                    "use_bias_correction=True",
-                    "safeguard_warmup=True"
-                ]
-            }
+            "max_train_epochs": 60,
+            "train_batch_size": 3,
+            "prior_loss_weight": 0.3,
+            "min_snr_gamma": 5.0,
+            "scale_weight_norms": 1.0,
+            "network_dim": 64,
+            "network_alpha": 64,
+            "optimizer_args": [
+                "decouple=True",
+                "d_coef=1.0",
+                "weight_decay=0.01",
+                "use_bias_correction=True",
+                "safeguard_warmup=True"
+            ]
         }
-    ]
+    },
+    {
+        "min": 11,
+        "max": 30,
+        "config": {
+            "max_train_epochs": 50,
+            "train_batch_size": 6,
+            "prior_loss_weight": 1.0,
+            "min_snr_gamma": 1.0,
+            "network_dim": 64,
+            "network_alpha": 64,
+            "optimizer_args": [
+                "decouple=True",
+                "d_coef=1.2",
+                "weight_decay=0.0",
+                "use_bias_correction=True",
+                "safeguard_warmup=True"
+            ]
+        }
+    },
+    {
+        "min": 31,
+        "max": 1000,
+        "config": {
+            "max_train_epochs": 50,
+            "train_batch_size": 8,
+            "prior_loss_weight": 1.0,
+            "min_snr_gamma": 1.0,
+            "network_dim": 64,
+            "network_alpha": 64,
+            "optimizer_args": [
+                "decouple=True",
+                "d_coef=1.2",
+                "weight_decay=0.0",
+                "use_bias_correction=True",
+                "safeguard_warmup=True"
+            ]
+        }
+    }
+]
 }
