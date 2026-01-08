@@ -17,9 +17,9 @@
             "min": 1,
             "max": 10,
             "config": {
-                "max_train_epochs": 50,
+                "max_train_epochs": 48,
                 "train_batch_size": 3,
-                "prior_loss_weight": 0.6,
+                "prior_loss_weight": 1.0,
                 "min_snr_gamma": 5.0,
                 "noise_offset": 0.0,
                 "scale_weight_norms": 10.0,
@@ -28,7 +28,7 @@
                 "optimizer_args": [
                     "decouple=True",
                     "d_coef=1.0",
-                    "weight_decay=0.01",
+                    "weight_decay=0.015",
                     "use_bias_correction=True",
                     "safeguard_warmup=True"
                 ]
