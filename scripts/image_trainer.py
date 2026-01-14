@@ -225,7 +225,6 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                     "save_every_n_epochs",
                     "scale_weight_norms",
                     "loss_type",
-                    "optimizer_type",
                 ]:
                     if optional_key in lrs_settings:
                         config[optional_key] = lrs_settings[optional_key]

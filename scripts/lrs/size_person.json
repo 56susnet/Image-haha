@@ -20,19 +20,18 @@
                 "max_train_epochs": 50,
                 "train_batch_size": 3,
                 "prior_loss_weight": 1.0,
-                "min_snr_gamma": 5.0,
+                "min_snr_gamma": 1.0,
                 "noise_offset": 0.0,
-                "scale_weight_norms": 10.0,
+                "scale_weight_norms": 100.0,
                 "loss_type": "l1",
-                "optimizer_type": "lion",
-                "unet_lr": 0.00003,
-                "text_encoder_lr": 0.00003,
-                "lr_scheduler": "cosine",
                 "network_dim": 64,
                 "network_alpha": 64,
                 "optimizer_args": [
-                    "weight_decay=0.01",
-                    "betas=0.9,0.95"
+                    "decouple=True",
+                    "d_coef=1.0",
+                    "weight_decay=0.0",
+                    "use_bias_correction=True",
+                    "safeguard_warmup=True"
                 ]
             }
         },
