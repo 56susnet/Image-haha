@@ -338,7 +338,6 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             if size_config:
                 print(f"Applying size-based tactical zone for {dataset_size} images", flush=True)
                 for key, value in size_config.items():
-                    print(f"DEBUG: Processing key={key}, value={value}", flush=True)
                     # Size-based config (Sniper/Turbo) has high priority
                     # Implement Adaptive Multiplier Logic
                     if isinstance(value, str) and value.startswith("*"):
@@ -364,7 +363,6 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                             config[key] = value
                     else:
                         # Standard Override
-                        print(f"DEBUG: Standard override {key} = {value}", flush=True)
                         config[key] = value
         
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.toml")
