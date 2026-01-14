@@ -25,8 +25,55 @@ from core.models.utility_models import ImageModelType
 
 # --- Model Categorization (Kasta) ---
 # --- Model Categorization (Kasta) ---
-# REALISTIC_MODELS and ANIME_MODELS lists removed to support Adaptive Logic
-# All models now follow the Base -> Model -> Size hierarchy.
+# Phase 5: Mass Model Governance
+# We define "Generals" (Proxies) and "Soldiers" (Target Models).
+
+MODELS_ANIME = [
+    # General: cagliostrolab/animagine-xl-4.0
+    "cagliostrolab/animagine-xl-4.0",
+    "zenless-lab/sdxl-aam-xl-anime-mix",
+    "John6666/nova-anime-xl-pony-v5-sdxl",
+    "zenless-lab/sdxl-anima-pencil-xl-v5",
+    "recoilme/colorfulxl",
+    "zenless-lab/sdxl-anything-xl",
+    "stablediffusionapi/protovision-xl-v6.6", # Often stylistic
+    "OnomaAIResearch/Illustrious-xl-early-release-v0",
+    "John6666/hassaku-xl-illustrious-v10style-sdxl",
+    "KBlueLeaf/Kohaku-XL-Zeta",
+    "zenless-lab/sdxl-blue-pencil-xl-v7",
+    "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16",
+    "mhnakif/fluxunchained-dev", # Anime style flux
+    "dataautogpt3/FLUX-MonochromeManga"
+]
+
+MODELS_REALISTIC = [
+    # General: dataautogpt3/CALAMITY
+    "dataautogpt3/CALAMITY",
+    "misri/leosamsHelloworldXL_helloworldXL70",
+    "GraydientPlatformAPI/albedobase2-xl",
+    "dataautogpt3/ProteusV0.5",
+    "dataautogpt3/ProteusSigma",
+    "fluently/Fluently-XL-Final",
+    "stabilityai/stable-diffusion-xl-base-1.0",
+    "openart-custom/DynaVisionXL",
+    "Lykon/dreamshaper-xl-1-0",
+    "mann-e/Mann-E_Dreams",
+    "Corcelio/mobius",
+    "femboysLover/RealisticStockPhoto-fp16",
+    "ehristoforu/Visionix-alpha",
+    "ifmain/UltraReal_Fine-Tune",
+    "Lykon/art-diffusion-xl-0.9",
+    "stablediffusionapi/omnium-sdxl",
+    "misri/zavychromaxl_v90",
+    "dataautogpt3/TempestV0.1",
+    "GraydientPlatformAPI/realism-engine2-xl",
+    "SG161222/RealVisXL_V4.0",
+    "bghira/terminus-xl-velocity-v2",
+    "rayonlabs/FLUX.1-dev", # Realistic Flux
+    "mikeyandfriends/PixelWave_FLUX.1-dev_03" 
+]
+
+# Anything else falls to "General" (Treated as Realistic Safety First)
 
 
 def get_model_path(path: str) -> str:
@@ -35,6 +82,54 @@ def get_model_path(path: str) -> str:
         if len(files) == 1 and files[0].endswith(".safetensors"):
             return os.path.join(path, files[0])
     return path
+
+# --- Phase 5: Mass Model Governance ---
+# We define "Generals" (Proxies) and "Soldiers" (Target Models).
+
+MODELS_ANIME = [
+    # General: cagliostrolab/animagine-xl-4.0
+    "cagliostrolab/animagine-xl-4.0",
+    "zenless-lab/sdxl-aam-xl-anime-mix",
+    "John6666/nova-anime-xl-pony-v5-sdxl",
+    "zenless-lab/sdxl-anima-pencil-xl-v5",
+    "recoilme/colorfulxl",
+    "zenless-lab/sdxl-anything-xl",
+    "stablediffusionapi/protovision-xl-v6.6", 
+    "OnomaAIResearch/Illustrious-xl-early-release-v0",
+    "John6666/hassaku-xl-illustrious-v10style-sdxl",
+    "KBlueLeaf/Kohaku-XL-Zeta",
+    "zenless-lab/sdxl-blue-pencil-xl-v7",
+    "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16",
+    "mhnakif/fluxunchained-dev", 
+    "dataautogpt3/FLUX-MonochromeManga"
+]
+
+MODELS_REALISTIC = [
+    # General: dataautogpt3/CALAMITY
+    "dataautogpt3/CALAMITY",
+    "misri/leosamsHelloworldXL_helloworldXL70",
+    "GraydientPlatformAPI/albedobase2-xl",
+    "dataautogpt3/ProteusV0.5",
+    "dataautogpt3/ProteusSigma",
+    "fluently/Fluently-XL-Final",
+    "stabilityai/stable-diffusion-xl-base-1.0",
+    "openart-custom/DynaVisionXL",
+    "Lykon/dreamshaper-xl-1-0",
+    "mann-e/Mann-E_Dreams",
+    "Corcelio/mobius",
+    "femboysLover/RealisticStockPhoto-fp16",
+    "ehristoforu/Visionix-alpha",
+    "ifmain/UltraReal_Fine-Tune",
+    "Lykon/art-diffusion-xl-0.9",
+    "stablediffusionapi/omnium-sdxl",
+    "misri/zavychromaxl_v90",
+    "dataautogpt3/TempestV0.1",
+    "GraydientPlatformAPI/realism-engine2-xl",
+    "SG161222/RealVisXL_V4.0",
+    "bghira/terminus-xl-velocity-v2",
+    "rayonlabs/FLUX.1-dev", 
+    "mikeyandfriends/PixelWave_FLUX.1-dev_03" 
+]
 def merge_model_config(default_config: dict, model_config: dict) -> dict:
     merged = {}
 
@@ -197,7 +292,6 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                     "seed",
                     "noise_offset",
                     "lr_scheduler",
-                    "lr_scheduler",
                     "save_every_n_epochs",
                     "scale_weight_norms",
                     "loss_type",
@@ -209,8 +303,31 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         else:
             print("Warning: Could not load LRS configuration, using default values", flush=True)
 
-        # --- PHASE 2: Categorical Overrides (REMOVED) ---
-        # Logic removed to prevent interference with Adaptive Multiplier config.
+        # --- Phase 5: Mass Model Governance (Kasta System) ---
+        # Apply "Class Profile" physics if model is in a known kasta.
+        # This runs BEFORE Size Config, so Size Config's "Physics Transparency" allows this to shine through.
+        
+        if model_name in MODELS_ANIME:
+            print(f"👻 Model '{model_name}' detected as ANIME Class (General: Animagine). Applying Anime Physics.", flush=True)
+            # ANIME PHYSICS (To be refined by Optuna tonight)
+            config["min_snr_gamma"] = 7.0
+            config["prior_loss_weight"] = 0.8
+            config["scale_weight_norms"] = 5.0
+            config["optimizer_args"] = [
+                "decouple=True", "d_coef=1.0", "weight_decay=0.01", "use_bias_correction=True", "safeguard_warmup=True"
+            ]
+
+        elif model_name in MODELS_REALISTIC:
+            print(f"📸 Model '{model_name}' detected as REALISTIC Class (General: Calamity). Applying Realistic Physics.", flush=True)
+            # REALISTIC PHYSICS (To be refined by Optuna tomorrow)
+            config["min_snr_gamma"] = 1.0 
+            config["prior_loss_weight"] = 1.0
+            config["scale_weight_norms"] = 1.0 # Safer than 0.0 for mass deployment
+            config["optimizer_args"] = [
+                "decouple=True", "d_coef=1.2", "weight_decay=0.01", "use_bias_correction=True", "safeguard_warmup=True"
+            ]
+            
+        # --- End Phase 5 ---
         # System now relies purely on LRS and Size-based scaling.
 
         network_config_person = {
