@@ -542,10 +542,13 @@ def run_training(model_type, config_path):
     if is_ai_toolkit:
         training_command = [
             "python3",
-            "/app/ai-toolkit/run.py",
+            os.path.join(project_root, "scripts", "ai-toolkit", "run.py"),
             config_path
         ]
     else:
+        # Standardize folder to 'sd-script' as observed in repo
+        sd_script_dir = os.path.join(project_root, "scripts", "sd-script")
+        
         if model_type == "sdxl":
             training_command = [
                 "accelerate", "launch",
@@ -555,7 +558,7 @@ def run_training(model_type, config_path):
                 "--num_processes", "1",
                 "--num_machines", "1",
                 "--num_cpu_threads_per_process", "2",
-                f"/app/sd-script/{model_type}_train_network.py",
+                os.path.join(sd_script_dir, f"{model_type}_train_network.py"),
                 "--config_file", config_path
             ]
         elif model_type == "flux":
@@ -567,7 +570,7 @@ def run_training(model_type, config_path):
                 "--num_processes", "1",
                 "--num_machines", "1",
                 "--num_cpu_threads_per_process", "2",
-                f"/app/sd-scripts/{model_type}_train_network.py",
+                os.path.join(sd_script_dir, f"{model_type}_train_network.py"),
                 "--config_file", config_path
             ]
 

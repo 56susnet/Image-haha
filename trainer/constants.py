@@ -24,16 +24,17 @@ CONTAINER_START_MAX_RETRIES = 3
 CONTAINER_START_RETRY_DELAY_SECONDS = 3 
 
 #TRAINING PATHS 
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE_ROOT_PATH = "/cache"
 HUGGINGFACE_CACHE_PATH = "/cache/hf_cache"
-OUTPUT_CHECKPOINTS_PATH = "/app/checkpoints/"
+OUTPUT_CHECKPOINTS_PATH = os.path.join(PROJECT_ROOT, "checkpoints")
 CACHE_MODELS_DIR = "/cache/models"
 CACHE_DATASETS_DIR = "/cache/datasets"
-WANDB_LOGS_DIR = "/app/checkpoints/wandb_logs"
-IMAGE_CONTAINER_CONFIG_TEMPLATE_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "scripts/core/config")
-IMAGE_CONTAINER_CONFIG_SAVE_PATH = "/dataset/configs"
-IMAGE_CONTAINER_IMAGES_PATH = "/dataset/images"
-TEXT_CONTAINER_SAVE_PATH = "/workspace/axolotl/outputs/"
+WANDB_LOGS_DIR = os.path.join(OUTPUT_CHECKPOINTS_PATH, "wandb_logs")
+IMAGE_CONTAINER_CONFIG_TEMPLATE_PATH = os.path.join(PROJECT_ROOT, "scripts/core/config")
+IMAGE_CONTAINER_CONFIG_SAVE_PATH = os.path.join(PROJECT_ROOT, "dataset/configs")
+IMAGE_CONTAINER_IMAGES_PATH = os.path.join(PROJECT_ROOT, "dataset/images")
+TEXT_CONTAINER_SAVE_PATH = os.path.join(PROJECT_ROOT, "axolotl/outputs")
 
 #Directories
 

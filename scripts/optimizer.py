@@ -14,10 +14,8 @@ import functools
 
 # --- CONFIGURATION ---
 PYTHON_CMD = "python3"
-SCRIPT_PATH = "/app/image-aa/scripts/image_trainer.py" # Adjust if running locally vs docker
-# For local testing, we might assume relative path
-if not os.path.exists(SCRIPT_PATH):
-    SCRIPT_PATH = "scripts/image_trainer.py" # Fallback for local run
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPT_PATH = os.path.join(SCRIPT_DIR, "image_trainer.py")
 
 # Regex to capture loss
 # Log format: "steps:  21%|██▏       | 77/360 [05:52<21:35,  4.58s/it, Average key norm=0.0255, Keys Scaled=0, avr_loss=0.14]"
