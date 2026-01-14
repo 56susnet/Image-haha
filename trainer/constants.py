@@ -25,11 +25,11 @@ CONTAINER_START_RETRY_DELAY_SECONDS = 3
 
 #TRAINING PATHS 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CACHE_ROOT_PATH = "/cache"
-HUGGINGFACE_CACHE_PATH = "/cache/hf_cache"
+CACHE_ROOT_PATH = "/cache" if os.path.exists("/cache") else os.path.join(PROJECT_ROOT, "cache")
+HUGGINGFACE_CACHE_PATH = os.path.join(CACHE_ROOT_PATH, "hf_cache")
 OUTPUT_CHECKPOINTS_PATH = os.path.join(PROJECT_ROOT, "checkpoints")
-CACHE_MODELS_DIR = "/cache/models"
-CACHE_DATASETS_DIR = "/cache/datasets"
+CACHE_MODELS_DIR = os.path.join(CACHE_ROOT_PATH, "models")
+CACHE_DATASETS_DIR = os.path.join(CACHE_ROOT_PATH, "datasets")
 WANDB_LOGS_DIR = os.path.join(OUTPUT_CHECKPOINTS_PATH, "wandb_logs")
 IMAGE_CONTAINER_CONFIG_TEMPLATE_PATH = os.path.join(PROJECT_ROOT, "scripts/core/config")
 IMAGE_CONTAINER_CONFIG_SAVE_PATH = os.path.join(PROJECT_ROOT, "dataset/configs")

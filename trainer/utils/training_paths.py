@@ -14,11 +14,16 @@ def get_checkpoints_output_path(task_id: str, repo_name: str) -> str:
 def get_image_base_model_path(model_id: str) -> str:
     model_folder = model_id.replace("/", "--")
     base_path = str(Path(train_cst.CACHE_MODELS_DIR) / model_folder)
+    
     if os.path.isdir(base_path):
         files = [f for f in os.listdir(base_path) if os.path.isfile(os.path.join(base_path, f))]
         if len(files) == 1 and files[0].endswith(".safetensors"):
             return os.path.join(base_path, files[0])
-    return base_path
+        return base_path
+        
+    # If the path doesn't exist locally, return the model_id (repo id) 
+    # so that the trainer can download it from HuggingFace
+    return model_id
 
 def get_image_training_images_dir(task_id: str) -> str:
     return str(Path(train_cst.IMAGE_CONTAINER_IMAGES_PATH) / task_id / "img")
