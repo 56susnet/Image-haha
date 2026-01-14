@@ -139,12 +139,19 @@ if __name__ == "__main__":
     # Wrap objective with partial to pass args
     optimization_func = functools.partial(objective, model=args.model, dataset_zip=args.dataset_zip)
 
+    start_time = time.time()
     try:
         study.optimize(optimization_func, n_trials=50, timeout=3600*6) # 6 Hours or 50 trials
     except KeyboardInterrupt:
         print("\nOptimization stopped by user.")
+    
+    end_time = time.time()
+    elapsed_time = end_time - start_time
+    hours, rem = divmod(elapsed_time, 3600)
+    minutes, seconds = divmod(rem, 60)
         
     print("\n--- OPTIMIZATION RESULTS ---")
+    print(f"Total Execution Time: {int(hours)}h {int(minutes)}m {int(seconds)}s")
     print(f"Best Trial: {study.best_trial.number}")
     print(f"Best Loss: {study.best_value}")
     print("Best Params:")
