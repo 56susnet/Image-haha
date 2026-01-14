@@ -24,33 +24,9 @@ from core.dataset.prepare_diffusion_dataset import prepare_dataset
 from core.models.utility_models import ImageModelType
 
 # --- Model Categorization (Kasta) ---
-REALISTIC_MODELS = [
-    "stabilityai/stable-diffusion-xl-base-1.0",
-    "misri/leosamsHelloworldXL_helloworldXL70",
-    "GraydientPlatformAPI/realism-engine2-xl",
-    "SG161222/RealVisXL_V4.0",
-    "misri/zavychromaxl_v90",
-    "femboysLover/RealisticStockPhoto-fp16",
-    "ehristoforu/Visionix-alpha",
-    "ifmain/UltraReal_Fine-Tune",
-    "stablediffusionapi/protovision-xl-v6.6",
-    "dataautogpt3/TempestV0.1",
-    "GraydientPlatformAPI/albedobase2-xl",
-    "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16"
-]
-
-ANIME_MODELS = [
-    "zenless-lab/sdxl-aam-xl-anime-mix",
-    "John6666/nova-anime-xl-pony-v5-sdxl",
-    "zenless-lab/sdxl-anima-pencil-xl-v5",
-    "cagliostrolab/animagine-xl-4.0",
-    "zenless-lab/sdxl-anything-xl",
-    "OnomaAIResearch/Illustrious-xl-early-release-v0",
-    "John6666/hassaku-xl-illustrious-v10style-sdxl",
-    "KBlueLeaf/Kohaku-XL-Zeta",
-    "zenless-lab/sdxl-blue-pencil-xl-v7"
-]
-# All other models fallback to GENERAL or default template settings.
+# --- Model Categorization (Kasta) ---
+# REALISTIC_MODELS and ANIME_MODELS lists removed to support Adaptive Logic
+# All models now follow the Base -> Model -> Size hierarchy.
 
 
 def get_model_path(path: str) -> str:
@@ -233,34 +209,9 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         else:
             print("Warning: Could not load LRS configuration, using default values", flush=True)
 
-        # --- PHASE 2: Categorical Overrides (Kasta Logic) ---
-        if model_type == "sdxl":
-            if model_name in REALISTIC_MODELS:
-                print(f"Categorizing as REALISTIC for {model_name} (Shatter Strategy - ZERO BRAKES)", flush=True)
-                config["prior_loss_weight"] = 1.0
-                config["min_snr_gamma"] = 1.0
-                config["noise_offset"] = 0.0357
-                config["scale_weight_norms"] = 0.0 # Remove brakes
-                config["caption_dropout_rate"] = 0.0
-                config["lr_scheduler"] = "cosine"
-            elif model_name in ANIME_MODELS:
-                print(f"Categorizing as ANIME for {model_name} (Shatter Strategy - ZERO BRAKES)", flush=True)
-                config["prior_loss_weight"] = 1.0
-                config["min_snr_gamma"] = 1.0 # Force maximum noise fixation
-                config["noise_offset"] = 0.0
-                config["scale_weight_norms"] = 0.0 # Remove brakes
-                config["caption_dropout_rate"] = 0.0
-                config["clip_skip"] = 2
-                config["lr_scheduler"] = "cosine"
-            else:
-                print(f"Categorizing as GENERAL for {model_name} (Shatter Strategy - ZERO BRAKES)", flush=True)
-                config["prior_loss_weight"] = 1.0
-                config["min_snr_gamma"] = 1.0
-                config["noise_offset"] = 0.0
-                config["scale_weight_norms"] = 0.0
-                config["caption_dropout_rate"] = 0.0
-                config["clip_skip"] = 1
-                config["lr_scheduler"] = "cosine"
+        # --- PHASE 2: Categorical Overrides (REMOVED) ---
+        # Logic removed to prevent interference with Adaptive Multiplier config.
+        # System now relies purely on LRS and Size-based scaling.
 
         network_config_person = {
             "stabilityai/stable-diffusion-xl-base-1.0": 235,
@@ -292,7 +243,7 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             "zenless-lab/sdxl-anything-xl": 228,
             "zenless-lab/sdxl-blue-pencil-xl-v7": 467,
             "Corcelio/mobius": 228,
-            "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16": 235,
+            "GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16": 467,
             "OnomaAIResearch/Illustrious-xl-early-release-v0": 228
         }
 
@@ -388,7 +339,31 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                 print(f"Applying size-based tactical zone for {dataset_size} images", flush=True)
                 for key, value in size_config.items():
                     # Size-based config (Sniper/Turbo) has high priority
-                    config[key] = value
+                    # Implement Adaptive Multiplier Logic
+                    if isinstance(value, str) and value.startswith("*"):
+                        try:
+                            multiplier = float(value[1:])
+                            if key in config:
+                                base_value = config[key]
+                                if isinstance(base_value, (int, float)):
+                                    new_value = base_value * multiplier
+                                    # Ensure logical types (int for epochs/dim, float for others if needed)
+                                    if key in ["max_train_epochs", "save_every_n_epochs", "network_dim", "network_alpha", "lr_warmup_steps", "train_batch_size"]:
+                                        config[key] = int(new_value)
+                                    else:
+                                        config[key] = new_value
+                                    print(f"  [Adaptive] Scaled {key}: {base_value} -> {config[key]} (x{multiplier})", flush=True)
+                                else:
+                                    print(f"  [Adaptive] Warning: Cannot multiply {key} (base value not number). Overwriting instead.", flush=True)
+                                    config[key] = value
+                            else:
+                                print(f"  [Adaptive] Warning: {key} not in base config. Cannot multiply. Ignoring.", flush=True)
+                        except ValueError:
+                            print(f"  [Adaptive] Error parsing multiplier {value} for {key}. Overwriting instead.", flush=True)
+                            config[key] = value
+                    else:
+                        # Standard Override
+                        config[key] = value
         
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.toml")
         save_config_toml(config, config_path)
