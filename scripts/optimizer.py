@@ -37,18 +37,7 @@ def objective(trial, model, dataset_zip):
     task_id = f"optuna_trial_{trial.number}_{int(time.time())}"
     
     # 2. Construct Command
-    # We need a valid model and dataset to optimize against.
-    # User should provide these via ENV or hardcoded for the "Calibration Dataset"
-    # For now, I will use placeholders that the user must fill or pass via args
-    # Parse CLI Arguments for Optimizer Configuration
-    parser = argparse.ArgumentParser(description="Image AA Optimizer")
-    parser.add_argument("--model", type=str, default="cagliostrolab/animagine-xl-4.0", help="Model ID to optimize")
-    parser.add_argument("--dataset-zip", type=str, required=True, help="URL of the dataset zip")
-    args = parser.parse_args()
-
-    model = args.model
-    dataset_zip = args.dataset_zip
-    
+    # Model and dataset are passed as arguments from main
     cmd = [
         PYTHON_CMD, SCRIPT_PATH,
         "--task-id", task_id,

@@ -22,6 +22,7 @@ import trainer.utils.training_paths as train_paths
 from core.config.config_handler import save_config, save_config_toml
 from core.dataset.prepare_diffusion_dataset import prepare_dataset
 from core.models.utility_models import ImageModelType
+from trainer.utils.trainer_downloader import download_image_dataset
 
 # --- Model Categorization (Kasta) ---
 # --- Model Categorization (Kasta) ---
@@ -328,6 +329,40 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             ]
             
         # --- End Phase 5 ---
+        
+        # --- PHASE 4: Automated Optimization Overrides ---
+        if optimization_overrides:
+            print(f"Applying Optuna overrides: {optimization_overrides}", flush=True)
+            for key, value in optimization_overrides.items():
+                if value is not None:
+                    # Special handling for optimizer_args to avoid lobotomizing the optimizer
+                    if key == "optimizer_args" and isinstance(value, list) and len(value) > 0:
+                        # Extract d_coef if it's there
+                        d_coef_val = None
+                        for item in value:
+                            if item.startswith("d_coef="):
+                                d_coef_val = item
+                                break
+                        
+                        if d_coef_val:
+                            # Update existing d_coef or append it
+                            existing_args = config.get("optimizer_args", [])
+                            new_args = []
+                            found = False
+                            for arg in existing_args:
+                                if arg.startswith("d_coef="):
+                                    new_args.append(d_coef_val)
+                                    found = True
+                                else:
+                                    new_args.append(arg)
+                            if not found:
+                                new_args.append(d_coef_val)
+                            config["optimizer_args"] = new_args
+                    else:
+                        config[key] = value
+                        if key in ["max_train_epochs", "save_every_n_epochs", "network_dim", "network_alpha", "train_batch_size"]:
+                             config[key] = int(value) 
+                    print(f"  [Optuna] Applied/Merged {key}", flush=True)
         # System now relies purely on LRS and Size-based scaling.
 
         network_config_person = {
@@ -592,6 +627,11 @@ async def main():
 
     model_path = train_paths.get_image_base_model_path(args.model)
 
+    # --- PHASE 4: Automated Download ---
+    # If file is missing, fetch it using the downloader logic
+    print(f"Checking for dataset zip: {args.dataset_zip}", flush=True)
+    await download_image_dataset(args.dataset_zip, args.task_id, train_cst.CACHE_DATASETS_DIR)
+
     print("Preparing dataset...", flush=True)
 
     prepare_dataset(
@@ -602,6 +642,16 @@ async def main():
         job_id=args.task_id,
         output_dir=train_cst.IMAGE_CONTAINER_IMAGES_PATH
     )
+
+    optimization_overrides = {
+        "min_snr_gamma": args.opt_gamma,
+        "prior_loss_weight": args.opt_prior,
+        "scale_weight_norms": args.opt_norm,
+        "max_train_epochs": args.opt_epochs,
+        "unet_lr": args.opt_lr,
+        "text_encoder_lr": args.opt_lr,
+        "optimizer_args": [f"d_coef={args.opt_d_coef}"] if args.opt_d_coef else None
+    }
 
     config_path = create_config(
         args.task_id,
