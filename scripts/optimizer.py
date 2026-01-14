@@ -81,7 +81,7 @@ def objective(trial, model, dataset_zip):
     try:
         current_step = 0
         for line in process.stdout:
-            # print(line, end="") # Verbose output? Maybe cleaner to just show status
+            print(line, end="") # Verbose output enabled for debugging
             
             # Parse Loss
             loss_match = LOSS_REGEX.search(line)
