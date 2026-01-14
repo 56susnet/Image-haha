@@ -136,7 +136,7 @@ def load_lrs_config(model_type: str, is_style: bool) -> dict:
         return None
 
 
-def create_config(task_id, model_path, model_name, model_type, expected_repo_name, trigger_word: str | None = None):
+def create_config(task_id, model_path, model_name, model_type, expected_repo_name, trigger_word: str | None = None, optimization_overrides: dict | None = None):
     """Get the training data directory"""
     train_data_dir = train_paths.get_image_training_images_dir(task_id)
 
@@ -365,6 +365,16 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                         # Standard Override
                         config[key] = value
         
+        # --- PHASE 4: Automated Optimization Overrides ---
+        if optimization_overrides:
+            print(f"Applying Optuna overrides: {optimization_overrides}", flush=True)
+            for key, value in optimization_overrides.items():
+                if value is not None:
+                    config[key] = value
+                    if key in ["max_train_epochs", "save_every_n_epochs", "network_dim", "network_alpha", "train_batch_size"]:
+                         config[key] = int(value) # Ensure appropriate types
+                    print(f"  [Optuna] Override {key} = {config[key]}", flush=True)
+
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.toml")
         save_config_toml(config, config_path)
         print(f"config is {config}", flush=True)
@@ -448,6 +458,14 @@ async def main():
     parser.add_argument("--dataset-zip", required=True, help="Link to dataset zip file")
     parser.add_argument("--model-type", required=True, choices=["sdxl", "flux", "qwen-image", "z-image"], help="Model type")
     parser.add_argument("--expected-repo-name", help="Expected repository name")
+    
+    # Optuna Args
+    parser.add_argument("--opt-gamma", type=float, help="Optuna Override: min_snr_gamma")
+    parser.add_argument("--opt-prior", type=float, help="Optuna Override: prior_loss_weight")
+    parser.add_argument("--opt-norm", type=float, help="Optuna Override: scale_weight_norms")
+    parser.add_argument("--opt-d-coef", type=float, help="Optuna Override: d_coef")
+    parser.add_argument("--opt-epochs", type=int, help="Optuna Override: max_train_epochs")
+    parser.add_argument("--opt-lr", type=float, help="Optuna Override: unet_lr/text_encoder_lr")
     parser.add_argument("--trigger-word", help="Trigger word for the training")
     parser.add_argument("--hours-to-complete", type=float, required=True, help="Number of hours to complete the task")
     args = parser.parse_args()
@@ -474,7 +492,8 @@ async def main():
         args.model,
         args.model_type,
         args.expected_repo_name,
-        args.trigger_word,
+        trigger_word=args.trigger_word,
+        optimization_overrides=optimization_overrides
     )
 
     run_training(args.model_type, config_path)
