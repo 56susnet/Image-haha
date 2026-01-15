@@ -15,7 +15,17 @@ import functools
 # --- CONFIGURATION ---
 PYTHON_CMD = "python3"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
 SCRIPT_PATH = os.path.join(SCRIPT_DIR, "image_trainer.py")
+
+# --- EMERGENCY TEMP DIR FIX ---
+# Create a local tmp directory to avoid system /tmp being full or inaccessible
+LOCAL_TMP = os.path.join(PROJECT_ROOT, "tmp")
+os.makedirs(LOCAL_TMP, exist_ok=True)
+os.environ["TMPDIR"] = LOCAL_TMP
+os.environ["TEMP"] = LOCAL_TMP
+os.environ["TMP"] = LOCAL_TMP
+print(f"--- Emergency Fix: Using local temp directory at {LOCAL_TMP} ---", flush=True)
 
 # Regex to capture loss
 # Log format: "steps:  21%|██▏       | 77/360 [05:52<21:35,  4.58s/it, Average key norm=0.0255, Keys Scaled=0, avr_loss=0.14]"
