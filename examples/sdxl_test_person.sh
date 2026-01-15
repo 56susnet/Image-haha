@@ -1,10 +1,10 @@
 #!/bin/bash
 
-TASK_ID="198cdb25-4e39-4650-bba3-fa2dc3259bfd"
-MODEL="GHArt/Lah_Mysterious_SDXL_V4.0_xl_fp16"
-DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/e0267ff723faf52e_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20260101%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20260101T224432Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=27dcb3bfc9b3958a0cc901828abea472e526d24ae37f3d0d802a9a441a51b6c9"
+TASK_ID="83d2264b-9aff-475a-856a-b1705635ce66"
+MODEL="cagliostrolab/animagine-xl-4.0"
+DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/5415896364b0f1ab_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20260109%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20260109T033315Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=a591c4f05800ce325c56f051c36189a3afcefcfbe1f938823eca5da1064b07a5"
 MODEL_TYPE="sdxl"
-EXPECTED_REPO_NAME="test_person-ghart1"
+EXPECTED_REPO_NAME="test_person-animagine-1"
 
 HUGGINGFACE_TOKEN=""
 HUGGINGFACE_USERNAME=""
