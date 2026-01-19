@@ -1,10 +1,10 @@
 #!/bin/bash
 
-TASK_ID="bdbb89e5-a52b-49da-a266-208f17cf77e2"
-MODEL="rayonlabs/FLUX.1-dev"
-DATASET_ZIP="https://s3.eu-central-003.backblazeb2.com/gradients-validator/0d28978014eb9e1a_train_data.zip?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=00362e8d6b742200000000002%2F20260101%2Feu-central-003%2Fs3%2Faws4_request&X-Amz-Date=20260101T230033Z&X-Amz-Expires=604800&X-Amz-SignedHeaders=host&X-Amz-Signature=86112ad9258debf40929e44449fb3ceb2ae43187d69f27978549d459e5aadc77"
+TASK_ID=""
+MODEL=""
+DATASET_ZIP=""
 MODEL_TYPE="flux"
-EXPECTED_REPO_NAME="test_flux-1"
+EXPECTED_REPO_NAME=""
 
 HUGGINGFACE_TOKEN=""
 HUGGINGFACE_USERNAME=""
