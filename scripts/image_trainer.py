@@ -319,12 +319,12 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         
         if model_name in MODELS_ANIME:
             print(f"👻 Model '{model_name}' detected as ANIME Class (General: Animagine). Applying Anime Physics.", flush=True)
-            # ANIME PHYSICS (Standardized by Optuna Winner 0.0246)
-            config["min_snr_gamma"] = 0.52
+            # ANIME PHYSICS (Refined for Illustrious-Class Robustness)
+            config["min_snr_gamma"] = 1.0
             config["prior_loss_weight"] = 0.50
-            config["scale_weight_norms"] = 4.21
+            config["scale_weight_norms"] = 10.0
             config["optimizer_args"] = [
-                "decouple=True", "d_coef=1.07", "weight_decay=0.01", "use_bias_correction=True", "safeguard_warmup=True"
+                "decouple=True", "d_coef=1.5", "weight_decay=0.01", "use_bias_correction=True", "safeguard_warmup=True"
             ]
 
         elif model_name in MODELS_REALISTIC:
