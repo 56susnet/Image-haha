@@ -329,12 +329,12 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
 
         elif model_name in MODELS_REALISTIC:
             print(f"📸 Model '{model_name}' detected as REALISTIC Class (General: Calamity). Applying Realistic Physics.", flush=True)
-            # REALISTIC PHYSICS (Refined for < 0.035 target)
-            config["min_snr_gamma"] = 6.0 
+            # REALISTIC PHYSICS (Precision Strike Refinement)
+            config["min_snr_gamma"] = 5.0 
             config["prior_loss_weight"] = 0.70
             config["scale_weight_norms"] = 5.0 
             config["optimizer_args"] = [
-                "decouple=True", "d_coef=1.8", "weight_decay=0.005", "use_bias_correction=True", "safeguard_warmup=True"
+                "decouple=True", "d_coef=1.2", "weight_decay=0.005", "use_bias_correction=True", "safeguard_warmup=True"
             ]
             
         # --- End Phase 5 ---
