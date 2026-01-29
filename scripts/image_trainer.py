@@ -519,63 +519,64 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             config["network_alpha"] = network_config["network_alpha"]
             config["network_args"] = network_config["network_args"]
 
-        size_category = get_dataset_size_category(dataset_size)
-        
-        if is_style:
-            # STYLE: Pro Adaptive Physics (AdamW)
-            anchor_unet = 5e-5
-            anchor_te = 5e-6
-            mults = STANDARD_MULTIPLIERS_STYLE.get(size_category)
+        if model_type == "sdxl":
+            size_category = get_dataset_size_category(dataset_size)
             
-            config["min_snr_gamma"] = 6
-            config["prior_loss_weight"] = 0.612
-            config["max_grad_norm"] = 1.314
-            config["noise_offset"] = 0.0411
-            config["seed"] = 2951032221
-            
-            print(f"Applying Pro STYLE Physics (AdamW) for category [{size_category.upper()}]", flush=True)
-            if mults:
-                config["unet_lr"] = get_jittered_value(anchor_unet, mults["unet"])
-                config["text_encoder_lr"] = get_jittered_value(anchor_te, mults["te"])
-                print(f"  [Physics] Set UNet LR: {config['unet_lr']:.2e}, TE LR: {config['text_encoder_lr']:.2e}", flush=True)
-        else:
-            # PERSON: Pro Adaptive Physics (Prodigy)
-            anchor_d_coef = 1.0
-            physics = STANDARD_PHYSICS_PERSON.get(size_category)
-            
-            config["min_snr_gamma"] = 6
-            config["prior_loss_weight"] = 0.7
-            
-            print(f"Applying Pro PERSON Physics (Prodigy) for category [{size_category.upper()}]", flush=True)
-            if physics:
-                config["unet_lr"] = 1.0
-                config["text_encoder_lr"] = physics["te_ratio"]
-                final_d_coef = get_jittered_value(anchor_d_coef, physics["d_coef"])
+            if is_style:
+                # STYLE: Pro Adaptive Physics (AdamW)
+                anchor_unet = 5e-5
+                anchor_te = 5e-6
+                mults = STANDARD_MULTIPLIERS_STYLE.get(size_category)
                 
-                new_args = []
-                # Pro optimizer args baseline
-                pro_base_args = {
-                    "decouple": "True",
-                    "weight_decay": "0.005",
-                    "use_bias_correction": "True",
-                    "safeguard_warmup": "True"
-                }
+                config["min_snr_gamma"] = 6
+                config["prior_loss_weight"] = 0.612
+                config["max_grad_norm"] = 1.314
+                config["noise_offset"] = 0.0411
+                config["seed"] = 2951032221
                 
-                # Rebuild optimizer_args with d_coef and pro baselines
-                new_args.append(f"d_coef={final_d_coef:.2f}")
-                for k, v in pro_base_args.items():
-                    new_args.append(f"{k}={v}")
+                print(f"Applying Pro STYLE Physics (AdamW) for category [{size_category.upper()}]", flush=True)
+                if mults:
+                    config["unet_lr"] = get_jittered_value(anchor_unet, mults["unet"])
+                    config["text_encoder_lr"] = get_jittered_value(anchor_te, mults["te"])
+                    print(f"  [Physics] Set UNet LR: {config['unet_lr']:.2e}, TE LR: {config['text_encoder_lr']:.2e}", flush=True)
+            else:
+                # PERSON: Pro Adaptive Physics (Prodigy)
+                anchor_d_coef = 1.0
+                physics = STANDARD_PHYSICS_PERSON.get(size_category)
                 
-                config["optimizer_args"] = new_args
-                print(f"  [Physics] Set d_coef: {final_d_coef:.2f}, TE Ratio: {config['text_encoder_lr']}", flush=True)
+                config["min_snr_gamma"] = 6
+                config["prior_loss_weight"] = 0.7
+                
+                print(f"Applying Pro PERSON Physics (Prodigy) for category [{size_category.upper()}]", flush=True)
+                if physics:
+                    config["unet_lr"] = 1.0
+                    config["text_encoder_lr"] = physics["te_ratio"]
+                    final_d_coef = get_jittered_value(anchor_d_coef, physics["d_coef"])
+                    
+                    new_args = []
+                    # Pro optimizer args baseline
+                    pro_base_args = {
+                        "decouple": "True",
+                        "weight_decay": "0.005",
+                        "use_bias_correction": "True",
+                        "safeguard_warmup": "True"
+                    }
+                    
+                    # Rebuild optimizer_args with d_coef and pro baselines
+                    new_args.append(f"d_coef={final_d_coef:.2f}")
+                    for k, v in pro_base_args.items():
+                        new_args.append(f"{k}={v}")
+                    
+                    config["optimizer_args"] = new_args
+                    print(f"  [Physics] Set d_coef: {final_d_coef:.2f}, TE Ratio: {config['text_encoder_lr']}", flush=True)
 
-        # --- PHASE 7: Pro Fine-Tuning Parameters ---
-        # "Hacking" the loss for better numerical results
-        config["loss_type"] = "huber"
-        config["huber_schedule"] = "snr" # Robust loss weighting
-        config["huber_c"] = 0.1         # Standard Huber threshold
-        # config["gradient_accumulation_steps"] = 1 # Already default but key for stable loss
-        print(f"  [Pro] Physics Enabled: Huber Loss (SNR Schedule)", flush=True)
+            # --- PHASE 7: Pro Fine-Tuning Parameters ---
+            # "Hacking" the loss for better numerical results
+            config["loss_type"] = "huber"
+            config["huber_schedule"] = "snr" # Robust loss weighting
+            config["huber_c"] = 0.1         # Standard Huber threshold
+            # config["gradient_accumulation_steps"] = 1 # Already default but key for stable loss
+            print(f"  [Pro] Physics Enabled: Huber Loss (SNR Schedule)", flush=True)
             
         # --- TIERED JSON RESOLUTION (Champion Tier) ---
         # Note: dataset_size already counted above in Phase 6.
