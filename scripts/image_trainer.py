@@ -519,6 +519,12 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             config["network_alpha"] = network_config["network_alpha"]
             config["network_args"] = network_config["network_args"]
 
+        dataset_size = 0
+        if os.path.exists(train_data_dir):
+            dataset_size = count_images_in_directory(train_data_dir)
+            if dataset_size > 0:
+                print(f"Counted {dataset_size} images in training directory", flush=True)
+
         if model_type == "sdxl":
             size_category = get_dataset_size_category(dataset_size)
             
