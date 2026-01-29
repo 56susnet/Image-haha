@@ -174,50 +174,75 @@ def count_images_in_directory(directory_path: str) -> int:
     
     return count
 
-def load_size_based_config(model_type: str, is_style: bool, dataset_size: int) -> dict:
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    config_dir = os.path.join(script_dir, "lrs")
-    
-    if model_type == "flux":
-        return None
-    elif is_style:
-        config_file = os.path.join(config_dir, "size_style.json")
-    else:
-        config_file = os.path.join(config_dir, "size_person.json")
-    
-    try:
-        with open(config_file, 'r') as f:
-            size_config = json.load(f)
-        
-        size_ranges = size_config.get("size_ranges", [])
-        for size_range in size_ranges:
-            min_size = size_range.get("min", 0)
-            max_size = size_range.get("max", float('inf'))
-            
-            if min_size <= dataset_size <= max_size:
-                print(f"Using size-based config for {dataset_size} images (range: {min_size}-{max_size})", flush=True)
-                return size_range.get("config", {})
-        
-        default_config = size_config.get("default", {})
-        if default_config:
-            print(f"Using default size-based config for {dataset_size} images", flush=True)
-        return default_config
-        
-    except Exception as e:
-        print(f"Warning: Could not load size-based config from {config_file}: {e}", flush=True)
-        return None
+# load_size_based_config removed - Consolidation to unified JSON architecture.
 
-def get_config_for_model(lrs_config: dict, model_name: str) -> dict:
+def get_dataset_size_category(dataset_size: int) -> str:
+    """Map dataset size to category labels used in LRS config."""
+    if dataset_size <= 10:
+        cat = "under_10"
+    elif dataset_size <= 20:
+        cat = "under_20"
+    elif dataset_size <= 30:
+        cat = "under_30"
+    else:
+        cat = "above_30"
+    
+    print(f"DEBUG_LRS: Image count {dataset_size} mapped to category -> [{cat.upper()}]", flush=True)
+    return cat
+
+def get_config_for_model(lrs_config: dict, model_hash: str, dataset_size: int = None, raw_model_name: str = None) -> dict:
     if not isinstance(lrs_config, dict):
         return None
 
     data = lrs_config.get("data")
     default_config = lrs_config.get("default", {})
+    
+    target_config = None
 
-    if isinstance(data, dict) and model_name in data:
-        return merge_model_config(default_config, data.get(model_name))
+    # Sanitize input name if provided
+    clean_name = raw_model_name.strip().strip("'").strip('"') if raw_model_name else None
+
+    # 1. Try Hash Lookup
+    if isinstance(data, dict):
+        if model_hash in data:
+            target_config = data.get(model_hash)
+            print(f"DEBUG_LRS: MATCH [HASH] -> {model_hash}", flush=True)
+            
+        # 2. Try Raw Name Lookup (Fallback)
+        elif clean_name:
+             # Direct lookup
+             if clean_name in data:
+                 target_config = data.get(clean_name)
+                 print(f"DEBUG_LRS: MATCH [DIRECT KEY] -> {clean_name}", flush=True)
+             else:
+                 # Iterative lookup (scan 'model_name' field)
+                 for key, val in data.items():
+                     if isinstance(val, dict) and val.get("model_name") == clean_name:
+                         target_config = val
+                         print(f"DEBUG_LRS: MATCH [FIELD SCAN] -> {clean_name} (Key: {key})", flush=True)
+                         break
+        
+        if not target_config and clean_name:
+             print(f"DEBUG_LRS: FAIL lookup for '{clean_name}'. Hash was '{model_hash}'", flush=True)
+
+    if target_config:
+        # If dataset_size provided and model_config has size categories, merge them
+        if dataset_size is not None and isinstance(target_config, dict):
+            size_category = get_dataset_size_category(dataset_size)
+            
+            # Check if model_config has size-specific settings
+            if size_category in target_config:
+                size_specific_config = target_config.get(size_category, {})
+                # Merge Config
+                base_model_config = {k: v for k, v in target_config.items() if k not in ["under_10", "under_20", "under_30", "above_30"]}
+                merged = merge_model_config(default_config, base_model_config)
+                print(f"DEBUG_LRS: Merged Size Config ({size_category})", flush=True)
+                return merge_model_config(merged, size_specific_config)
+        
+        return merge_model_config(default_config, target_config)
 
     if default_config:
+        print("DEBUG_LRS: Using Default Config", flush=True)
         return default_config
 
     return None
@@ -443,31 +468,11 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
         }
 
         config_mapping = {
-            228: {
-                "network_dim": 32,
-                "network_alpha": 32,
-                "network_args": []
-            },
-            235: {
-                "network_dim": 32,
-                "network_alpha": 32,
-                "network_args": ["conv_dim=4", "conv_alpha=4", "dropout=null"]
-            },
-            456: {
-                "network_dim": 64,
-                "network_alpha": 64,
-                "network_args": []
-            },
-            467: {
-                "network_dim": 64,
-                "network_alpha": 64,
-                "network_args": ["conv_dim=4", "conv_alpha=4", "dropout=null"]
-            },
-            699: {
-                "network_dim": 96,
-                "network_alpha": 96,
-                "network_args": ["conv_dim=4", "conv_alpha=4", "dropout=null"]
-            },
+            228: {"network_dim": 32, "network_alpha": 32, "network_args": ["conv_dim=8", "conv_alpha=8", "algo=locon"]},
+            235: {"network_dim": 32, "network_alpha": 32, "network_args": ["conv_dim=8", "conv_alpha=8", "algo=locon"]},
+            456: {"network_dim": 64, "network_alpha": 64, "network_args": ["conv_dim=16", "conv_alpha=16", "algo=locon"]},
+            467: {"network_dim": 64, "network_alpha": 64, "network_args": ["conv_dim=16", "conv_alpha=16", "algo=locon"]},
+            699: {"network_dim": 96, "network_alpha": 96, "network_args": ["conv_dim=32", "conv_alpha=32", "algo=locon"]},
         }
 
         config["pretrained_model_name_or_path"] = model_path
@@ -487,54 +492,57 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             config["network_alpha"] = network_config["network_alpha"]
             config["network_args"] = network_config["network_args"]
 
-
+        # --- TIERED JSON RESOLUTION (Champion Tier) ---
         dataset_size = 0
         if os.path.exists(train_data_dir):
             dataset_size = count_images_in_directory(train_data_dir)
             if dataset_size > 0:
                 print(f"Counted {dataset_size} images in training directory", flush=True)
 
-        if dataset_size > 0:
-            size_config = load_size_based_config(model_type, is_style, dataset_size)
-            if size_config:
-                print(f"Applying size-based tactical zone for {dataset_size} images", flush=True)
-                for key, value in size_config.items():
-                    # Size-based config (Sniper/Turbo) has high priority
-                    # Implement Adaptive Multiplier Logic
-                    if isinstance(value, str) and value.startswith("*"):
-                        try:
-                            multiplier = float(value[1:])
-                            if key in config:
-                                base_value = config[key]
-                                if isinstance(base_value, (int, float)):
-                                    new_value = base_value * multiplier
-                                    # Ensure logical types (int for epochs/dim, float for others if needed)
-                                    if key in ["max_train_epochs", "save_every_n_epochs", "network_dim", "network_alpha", "lr_warmup_steps", "train_batch_size"]:
-                                        config[key] = int(new_value)
-                                    else:
-                                        config[key] = new_value
-                                    print(f"  [Adaptive] Scaled {key}: {base_value} -> {config[key]} (x{multiplier})", flush=True)
+        lrs_settings = None
+        lrs_config = load_lrs_config(model_type, is_style)
+        if lrs_config:
+            # Sanitize model name for robust hashing
+            clean_model_name = model_name.strip().strip("'").strip('"')
+            model_hash = hash_model(clean_model_name)
+            lrs_settings = get_config_for_model(lrs_config, model_hash, dataset_size, clean_model_name)
+
+        # Apply overrides with Adaptive Multiplier logic
+        def apply_overrides(name, overrides):
+            for key, value in overrides.items():
+                if key in ["under_10", "under_20", "under_30", "above_30"]:
+                    continue
+                
+                if isinstance(value, str) and value.startswith("*"):
+                    try:
+                        multiplier = float(value[1:])
+                        if key in config:
+                            base_value = config[key]
+                            if isinstance(base_value, (int, float)):
+                                new_value = base_value * multiplier
+                                if key in ["max_train_epochs", "save_every_n_epochs", "network_dim", "network_alpha", "lr_warmup_steps", "train_batch_size"]:
+                                    config[key] = int(new_value)
                                 else:
-                                    print(f"  [Adaptive] Warning: Cannot multiply {key} (base value not number). Overwriting instead.", flush=True)
-                                    config[key] = value
+                                    config[key] = new_value
+                                print(f"  [Adaptive] Scaled {key}: {base_value} -> {config[key]} (x{multiplier}) from {name}", flush=True)
                             else:
-                                print(f"  [Adaptive] Warning: {key} not in base config. Cannot multiply. Ignoring.", flush=True)
-                        except ValueError:
-                            print(f"  [Adaptive] Error parsing multiplier {value} for {key}. Overwriting instead.", flush=True)
-                            config[key] = value
-                    else:
-                        # Standard Override
+                                print(f"  [Adaptive] Warning: Cannot multiply {key}. Overwriting with {value}", flush=True)
+                                config[key] = value
+                        else:
+                            print(f"  [Adaptive] Warning: {key} not in base config. Ignoring.", flush=True)
+                    except ValueError:
                         config[key] = value
+                else:
+                    config[key] = value
+
+        if lrs_settings:
+            print(f"Applying Champion LRS overrides for {model_name}", flush=True)
+            apply_overrides("Champion LRS", lrs_settings)
         
         # --- PHASE 4: Automated Optimization Overrides ---
         if optimization_overrides:
             print(f"Applying Optuna overrides: {optimization_overrides}", flush=True)
-            for key, value in optimization_overrides.items():
-                if value is not None:
-                    config[key] = value
-                    if key in ["max_train_epochs", "save_every_n_epochs", "network_dim", "network_alpha", "train_batch_size"]:
-                         config[key] = int(value) # Ensure appropriate types
-                    print(f"  [Optuna] Override {key} = {config[key]}", flush=True)
+            apply_overrides("Optuna", optimization_overrides)
 
         config_path = os.path.join(train_cst.IMAGE_CONTAINER_CONFIG_SAVE_PATH, f"{task_id}.toml")
         save_config_toml(config, config_path)
