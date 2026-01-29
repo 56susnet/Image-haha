@@ -2,10 +2,11 @@ import json
 import os
 
 # Files that use the hash-based structure {"data": {"hash": {...}}, "default": {...}}
+base_dir = "/Users/zulist/Documents/aaa/data/image-aa"
 hash_files = [
-    "scripts/lrs/flux.json",
-    "scripts/lrs/person_config.json",
-    "scripts/lrs/style_config.json"
+    os.path.join(base_dir, "scripts/lrs/flux.json"),
+    os.path.join(base_dir, "scripts/lrs/person_config.json"),
+    os.path.join(base_dir, "scripts/lrs/style_config.json")
 ]
 
 def clean_hash_file(file_path):

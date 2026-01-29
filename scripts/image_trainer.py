@@ -9,6 +9,7 @@ import subprocess
 import sys
 import re
 import time
+import random
 import yaml
 import toml
 
@@ -140,6 +141,32 @@ MODELS_REALISTIC = [
     "rayonlabs/FLUX.1-dev", 
     "mikeyandfriends/PixelWave_FLUX.1-dev_03" 
 ]
+
+# --- PHASE 6: Standard Global Physics (Pro Optimized) ---
+
+# STYLE Anchors (Pro Source)
+# UNet 5e-5, TE 5e-6, min_snr_gamma=6, prior_loss_weight=0.612, max_grad_norm=1.314
+STANDARD_MULTIPLIERS_STYLE = {
+    "under_10": {"unet": 4.0, "te": 2.0}, # -> 2e-4 / 1e-5
+    "under_20": {"unet": 2.0, "te": 1.6}, # -> 1e-4 / 8e-6
+    "under_30": {"unet": 1.6, "te": 1.0}, # -> 8e-5 / 5e-6
+    "above_30": {"unet": 1.0, "te": 1.0}  # -> 5e-5 / 5e-6
+}
+
+# PERSON Anchors (Pro Source)
+# Prodigy base d_coef=1.0, prior_loss_weight=0.7, min_snr_gamma=6
+STANDARD_PHYSICS_PERSON = {
+    "under_10": {"d_coef": 2.4, "te_ratio": 1.5},
+    "under_20": {"d_coef": 1.8, "te_ratio": 1.3},
+    "under_30": {"d_coef": 1.4, "te_ratio": 1.2},
+    "above_30": {"d_coef": 1.0, "te_ratio": 1.0}
+}
+
+def get_jittered_value(base_val, multiplier, jitter_range=0.1):
+    """Apply multiplier and a small random jitter (+/- 10% default)."""
+    target = base_val * multiplier
+    jitter = random.uniform(1 - jitter_range, 1 + jitter_range)
+    return target * jitter
 def merge_model_config(default_config: dict, model_config: dict) -> dict:
     merged = {}
 
@@ -492,12 +519,66 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
             config["network_alpha"] = network_config["network_alpha"]
             config["network_args"] = network_config["network_args"]
 
+        size_category = get_dataset_size_category(dataset_size)
+        
+        if is_style:
+            # STYLE: Pro Adaptive Physics (AdamW)
+            anchor_unet = 5e-5
+            anchor_te = 5e-6
+            mults = STANDARD_MULTIPLIERS_STYLE.get(size_category)
+            
+            config["min_snr_gamma"] = 6
+            config["prior_loss_weight"] = 0.612
+            config["max_grad_norm"] = 1.314
+            config["noise_offset"] = 0.0411
+            config["seed"] = 2951032221
+            
+            print(f"Applying Pro STYLE Physics (AdamW) for category [{size_category.upper()}]", flush=True)
+            if mults:
+                config["unet_lr"] = get_jittered_value(anchor_unet, mults["unet"])
+                config["text_encoder_lr"] = get_jittered_value(anchor_te, mults["te"])
+                print(f"  [Physics] Set UNet LR: {config['unet_lr']:.2e}, TE LR: {config['text_encoder_lr']:.2e}", flush=True)
+        else:
+            # PERSON: Pro Adaptive Physics (Prodigy)
+            anchor_d_coef = 1.0
+            physics = STANDARD_PHYSICS_PERSON.get(size_category)
+            
+            config["min_snr_gamma"] = 6
+            config["prior_loss_weight"] = 0.7
+            
+            print(f"Applying Pro PERSON Physics (Prodigy) for category [{size_category.upper()}]", flush=True)
+            if physics:
+                config["unet_lr"] = 1.0
+                config["text_encoder_lr"] = physics["te_ratio"]
+                final_d_coef = get_jittered_value(anchor_d_coef, physics["d_coef"])
+                
+                new_args = []
+                # Pro optimizer args baseline
+                pro_base_args = {
+                    "decouple": "True",
+                    "weight_decay": "0.005",
+                    "use_bias_correction": "True",
+                    "safeguard_warmup": "True"
+                }
+                
+                # Rebuild optimizer_args with d_coef and pro baselines
+                new_args.append(f"d_coef={final_d_coef:.2f}")
+                for k, v in pro_base_args.items():
+                    new_args.append(f"{k}={v}")
+                
+                config["optimizer_args"] = new_args
+                print(f"  [Physics] Set d_coef: {final_d_coef:.2f}, TE Ratio: {config['text_encoder_lr']}", flush=True)
+
+        # --- PHASE 7: Pro Fine-Tuning Parameters ---
+        # "Hacking" the loss for better numerical results
+        config["loss_type"] = "huber"
+        config["huber_schedule"] = "snr" # Robust loss weighting
+        config["huber_c"] = 0.1         # Standard Huber threshold
+        # config["gradient_accumulation_steps"] = 1 # Already default but key for stable loss
+        print(f"  [Pro] Physics Enabled: Huber Loss (SNR Schedule)", flush=True)
+            
         # --- TIERED JSON RESOLUTION (Champion Tier) ---
-        dataset_size = 0
-        if os.path.exists(train_data_dir):
-            dataset_size = count_images_in_directory(train_data_dir)
-            if dataset_size > 0:
-                print(f"Counted {dataset_size} images in training directory", flush=True)
+        # Note: dataset_size already counted above in Phase 6.
 
         lrs_settings = None
         lrs_config = load_lrs_config(model_type, is_style)
