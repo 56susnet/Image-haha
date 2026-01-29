@@ -11,7 +11,9 @@ import re
 import time
 import random
 import yaml
+import yaml
 import toml
+import math
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(script_dir)
@@ -575,6 +577,32 @@ def create_config(task_id, model_path, model_name, model_type, expected_repo_nam
                     
                     config["optimizer_args"] = new_args
                     print(f"  [Physics] Set d_coef: {final_d_coef:.2f}, TE Ratio: {config['text_encoder_lr']}", flush=True)
+
+            # --- Dynamic Epochs (User Requested) ---
+            num_images = dataset_size
+            # Estimate hours to complete (Heuristic: 2s/step, Batch 4)
+            # This is a rough estimation to satisfy the condition logic
+            est_batch_size = config.get("train_batch_size", 4)
+            est_steps_per_epoch = math.ceil(num_images / est_batch_size)
+            # Assume strict baseline of 55 for estimation check
+            est_total_steps = est_steps_per_epoch * 55 
+            est_seconds = est_total_steps * 2.0 # 2 seconds per step for SDXL
+            hours_to_complete = est_seconds / 3600.0
+
+            if 1 <= num_images <= 20:
+                total_epochs = 55
+            elif num_images > 20 and hours_to_complete <= 1.0:
+                # Fast training regime
+                total_epochs = 35 
+            elif 20 < num_images <= 50:
+                total_epochs = 65
+            else:
+                total_epochs = int(config.get("max_train_epochs", 30)) # Warning: Default fallback
+            
+            # Apply Dynamic Epochs
+            config["max_train_epochs"] = total_epochs
+            config["save_every_n_epochs"] = max(1, math.ceil(total_epochs / 4))
+            print(f"  [Dynamic] Epochs set to {total_epochs} (Images: {num_images}, Est. Hours: {hours_to_complete:.2f})", flush=True)
 
             # --- PHASE 7: Pro Fine-Tuning Parameters ---
             # "Hacking" the loss for better numerical results
